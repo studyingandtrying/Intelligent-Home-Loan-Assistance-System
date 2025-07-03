@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qy.mapper.house.MyReviewMapper">
+    <insert id="insertReviewPojo" parameterType="com.qy.domain.pojo.ReviewPojo">
+        insert into reviews
+        <trim suffix=")" suffixOverrides="," prefix="(">
+            <if test="houseId!=null">house_id,</if>
+            <if test="tenantId!=null">tenant_id,</if>
+            <if test="landlordId!=null">landlord_id,</if>
+            <if test="rating!=null">rating,</if>
+            <if test="content!=null">content,</if>
+            <if test="reply!=null">reply,</if>
+        </trim>
+            values
+        <trim suffix=")" suffixOverrides="," prefix="(">
+            <if test="houseId!=null">#{houseId},</if>
+            <if test="tenantId!=null">#{tenantId},</if>
+            <if test="landlordId!=null">#{landlordId},</if>
+            <if test="rating!=null">#{rating},</if>
+            <if test="content!=null">#{content},</if>
+            <if test="reply!=null">#{reply},</if>
+        </trim>
+    </insert>
+    <update id="updateReview">
+        update reviews set
+        <trim suffix=")" suffixOverrides="," prefix="(">
+            <if test="rating!=null">rating=#{rating},</if>
+            <if test="content!=null">content=#{content},</if>
+            <if test="reply!=null">reply=#{reply},</if>
+        </trim>
+            where id=#{id}
+    </update>
+</mapper>
