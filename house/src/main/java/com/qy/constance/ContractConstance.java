@@ -5,6 +5,7 @@ import lombok.Getter;
 public class ContractConstance {
     @Getter
     public enum status{
+        DRAFT("draft"),
         SIGNED("signed"),
         ACTIVE("active"),
         EXPIRED("expired"),

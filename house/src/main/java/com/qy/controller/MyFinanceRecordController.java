@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/house/finance")
+@RequestMapping("/Myhouse/finance")
 public class MyFinanceRecordController {
 
     @Autowired

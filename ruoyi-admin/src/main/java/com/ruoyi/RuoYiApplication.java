@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @ComponentScan({"com.ruoyi","com.qy"})
-@MapperScan("com.qy.mapper")
+@MapperScan({"com.qy.mapper","com.qy.admin.mapper"})
 public class RuoYiApplication
 {
     public static void main(String[] args)

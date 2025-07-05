@@ -14,5 +14,5 @@ public interface MyContractMapper {
 
     List<ContractPojo> selectContractsByLandordId(@Param("userId")Integer userId);
 
-    void updateContract(ContractPojo contractPojo);
+
 }

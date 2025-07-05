@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.admin.mapper.ReviewsMapper">
+    
+    <resultMap type="Reviews" id="ReviewsResult">
+        <result property="id"    column="id"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="landlordId"    column="landlord_id"    />
+        <result property="rating"    column="rating"    />
+        <result property="content"    column="content"    />
+        <result property="reply"    column="reply"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectReviewsVo">
+        select id, house_id, tenant_id, landlord_id, rating, content, reply, created_at from reviews
+    </sql>
+
+    <select id="selectReviewsList" parameterType="Reviews" resultMap="ReviewsResult">
+        <include refid="selectReviewsVo"/>
+        <where>  
+            <if test="houseId != null "> and house_id = #{houseId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="landlordId != null "> and landlord_id = #{landlordId}</if>
+            <if test="rating != null "> and rating = #{rating}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="reply != null  and reply != ''"> and reply = #{reply}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectReviewsById" parameterType="Long" resultMap="ReviewsResult">
+        <include refid="selectReviewsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertReviews" parameterType="Reviews" useGeneratedKeys="true" keyProperty="id">
+        insert into reviews
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="houseId != null">house_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="landlordId != null">landlord_id,</if>
+            <if test="rating != null">rating,</if>
+            <if test="content != null">content,</if>
+            <if test="reply != null">reply,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="houseId != null">#{houseId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="landlordId != null">#{landlordId},</if>
+            <if test="rating != null">#{rating},</if>
+            <if test="content != null">#{content},</if>
+            <if test="reply != null">#{reply},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateReviews" parameterType="Reviews">
+        update reviews
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="landlordId != null">landlord_id = #{landlordId},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="reply != null">reply = #{reply},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReviewsById" parameterType="Long">
+        delete from reviews where id = #{id}
+    </delete>
+
+    <delete id="deleteReviewsByIds" parameterType="String">
+        delete from reviews where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

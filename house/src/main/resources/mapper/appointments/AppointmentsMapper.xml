@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.admin.mapper.AppointmentsMapper">
+    
+    <resultMap type="Appointments" id="AppointmentsResult">
+        <result property="id"    column="id"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="landlordId"    column="landlord_id"    />
+        <result property="appointmentTime"    column="appointment_time"    />
+        <result property="contactName"    column="contact_name"    />
+        <result property="contactPhone"    column="contact_phone"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="rejectReason"    column="reject_reason"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectAppointmentsVo">
+        select id, house_id, tenant_id, landlord_id, appointment_time, contact_name, contact_phone, remark, status, reject_reason, created_at, updated_at from appointments
+    </sql>
+
+    <select id="selectAppointmentsList" parameterType="Appointments" resultMap="AppointmentsResult">
+        <include refid="selectAppointmentsVo"/>
+        <where>  
+            <if test="houseId != null "> and house_id = #{houseId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="landlordId != null "> and landlord_id = #{landlordId}</if>
+            <if test="appointmentTime != null "> and appointment_time = #{appointmentTime}</if>
+            <if test="contactName != null  and contactName != ''"> and contact_name like concat('%', #{contactName}, '%')</if>
+            <if test="contactPhone != null  and contactPhone != ''"> and contact_phone = #{contactPhone}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="rejectReason != null  and rejectReason != ''"> and reject_reason = #{rejectReason}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppointmentsById" parameterType="Long" resultMap="AppointmentsResult">
+        <include refid="selectAppointmentsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAppointments" parameterType="Appointments" useGeneratedKeys="true" keyProperty="id">
+        insert into appointments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="houseId != null">house_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="landlordId != null">landlord_id,</if>
+            <if test="appointmentTime != null">appointment_time,</if>
+            <if test="contactName != null and contactName != ''">contact_name,</if>
+            <if test="contactPhone != null and contactPhone != ''">contact_phone,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="rejectReason != null">reject_reason,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="houseId != null">#{houseId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="landlordId != null">#{landlordId},</if>
+            <if test="appointmentTime != null">#{appointmentTime},</if>
+            <if test="contactName != null and contactName != ''">#{contactName},</if>
+            <if test="contactPhone != null and contactPhone != ''">#{contactPhone},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="rejectReason != null">#{rejectReason},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppointments" parameterType="Appointments">
+        update appointments
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="landlordId != null">landlord_id = #{landlordId},</if>
+            <if test="appointmentTime != null">appointment_time = #{appointmentTime},</if>
+            <if test="contactName != null and contactName != ''">contact_name = #{contactName},</if>
+            <if test="contactPhone != null and contactPhone != ''">contact_phone = #{contactPhone},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppointmentsById" parameterType="Long">
+        delete from appointments where id = #{id}
+    </delete>
+
+    <delete id="deleteAppointmentsByIds" parameterType="String">
+        delete from appointments where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

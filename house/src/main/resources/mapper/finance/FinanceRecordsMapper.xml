@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.admin.mapper.FinanceRecordsMapper">
+    
+    <resultMap type="FinanceRecords" id="FinanceRecordsResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="type"    column="type"    />
+        <result property="amount"    column="amount"    />
+        <result property="description"    column="description"    />
+        <result property="relatedHouseId"    column="related_house_id"    />
+        <result property="relatedContractId"    column="related_contract_id"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectFinanceRecordsVo">
+        select id, user_id, type, amount, description, related_house_id, related_contract_id, created_at from finance_records
+    </sql>
+
+    <select id="selectFinanceRecordsList" parameterType="FinanceRecords" resultMap="FinanceRecordsResult">
+        <include refid="selectFinanceRecordsVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="relatedHouseId != null "> and related_house_id = #{relatedHouseId}</if>
+            <if test="relatedContractId != null "> and related_contract_id = #{relatedContractId}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceRecordsById" parameterType="Long" resultMap="FinanceRecordsResult">
+        <include refid="selectFinanceRecordsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFinanceRecords" parameterType="FinanceRecords" useGeneratedKeys="true" keyProperty="id">
+        insert into finance_records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="amount != null">amount,</if>
+            <if test="description != null">description,</if>
+            <if test="relatedHouseId != null">related_house_id,</if>
+            <if test="relatedContractId != null">related_contract_id,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="description != null">#{description},</if>
+            <if test="relatedHouseId != null">#{relatedHouseId},</if>
+            <if test="relatedContractId != null">#{relatedContractId},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceRecords" parameterType="FinanceRecords">
+        update finance_records
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="relatedHouseId != null">related_house_id = #{relatedHouseId},</if>
+            <if test="relatedContractId != null">related_contract_id = #{relatedContractId},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceRecordsById" parameterType="Long">
+        delete from finance_records where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceRecordsByIds" parameterType="String">
+        delete from finance_records where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

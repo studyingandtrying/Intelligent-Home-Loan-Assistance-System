@@ -10,5 +10,6 @@ public interface MyContractService {
 
     List<ContractVo> getContractByLandordId(Integer userId);
 
-    void updateContract(ContractDto contractDto);
+
+    void addContract(ContractDto contractDto);
 }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/house/review")
+@RequestMapping("/Myhouse/review")
 public class MyReviewController {
 
     @Autowired

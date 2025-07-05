@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/house/contract")
+@RequestMapping("/Myhouse/contract")
 public class MyContractController {
 
     @Autowired
@@ -28,9 +28,11 @@ public class MyContractController {
         return AjaxResult.success("查询成功！",list);
     }
 
-    @PutMapping("/updateContract")
-    public AjaxResult updateContract(@RequestBody ContractDto contractDto){
-        myContractService.updateContract(contractDto);
-        return AjaxResult.success("更新成功！");
+    @PutMapping("/draftContract")
+    public AjaxResult draftContract(@RequestBody ContractDto contractDto){
+        myContractService.addContract(contractDto);
+        return AjaxResult.success("插入成功！");
     }
+
+
 }
